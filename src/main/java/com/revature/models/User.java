@@ -1,15 +1,56 @@
 package com.revature.models;
 
+import java.util.List;
+import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="users")
 public class User {
+	
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
 int id;
+@Column(nullable=false)
 private String username;
+@Column(nullable=false)
 private String password;
 private String firstname;
 private String lastname;
+@Column(nullable=false)
 private String email;
-int role;
 
-public User(int id, String username, String password, String firstname, String lastname, String email, int role) {
+@OneToMany(mappedBy="re_id", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+List<Reimbursement> reimbursements;
+@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+@JoinColumn(name="roleid")
+Role role;
+
+
+public User(String username, String password, String firstname, String lastname, String email,
+		List<Reimbursement> reimbursements, Role role) {
+	super();
+	this.username = username;
+	this.password = password;
+	this.firstname = firstname;
+	this.lastname = lastname;
+	this.email = email;
+	this.reimbursements = reimbursements;
+	this.role = role;
+}
+public User(int id, String username, String password, String firstname, String lastname, String email,
+		List<Reimbursement> reimbursements, Role role) {
 	super();
 	this.id = id;
 	this.username = username;
@@ -17,15 +58,7 @@ public User(int id, String username, String password, String firstname, String l
 	this.firstname = firstname;
 	this.lastname = lastname;
 	this.email = email;
-	this.role = role;
-}
-public User(String username, String password, String firstname, String lastname, String email, int role) {
-	super();
-	this.username = username;
-	this.password = password;
-	this.firstname = firstname;
-	this.lastname = lastname;
-	this.email = email;
+	this.reimbursements = reimbursements;
 	this.role = role;
 }
 public User() {
@@ -50,7 +83,7 @@ public String getLastname() {
 public String getEmail() {
 	return email;
 }
-public int getRole() {
+public Role getRole() {
 	return role;
 }
 public void setId(int id) {
@@ -71,21 +104,12 @@ public void setLastname(String lastname) {
 public void setEmail(String email) {
 	this.email = email;
 }
-public void setRole(int role) {
+public void setRole(Role role) {
 	this.role = role;
 }
 @Override
 public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((email == null) ? 0 : email.hashCode());
-	result = prime * result + ((firstname == null) ? 0 : firstname.hashCode());
-	result = prime * result + id;
-	result = prime * result + ((lastname == null) ? 0 : lastname.hashCode());
-	result = prime * result + ((password == null) ? 0 : password.hashCode());
-	result = prime * result + role;
-	result = prime * result + ((username == null) ? 0 : username.hashCode());
-	return result;
+	return Objects.hash(email, firstname, id, lastname, password, reimbursements, role, username);
 }
 @Override
 public boolean equals(Object obj) {
@@ -96,36 +120,10 @@ public boolean equals(Object obj) {
 	if (getClass() != obj.getClass())
 		return false;
 	User other = (User) obj;
-	if (email == null) {
-		if (other.email != null)
-			return false;
-	} else if (!email.equals(other.email))
-		return false;
-	if (firstname == null) {
-		if (other.firstname != null)
-			return false;
-	} else if (!firstname.equals(other.firstname))
-		return false;
-	if (id != other.id)
-		return false;
-	if (lastname == null) {
-		if (other.lastname != null)
-			return false;
-	} else if (!lastname.equals(other.lastname))
-		return false;
-	if (password == null) {
-		if (other.password != null)
-			return false;
-	} else if (!password.equals(other.password))
-		return false;
-	if (role != other.role)
-		return false;
-	if (username == null) {
-		if (other.username != null)
-			return false;
-	} else if (!username.equals(other.username))
-		return false;
-	return true;
+	return Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname) && id == other.id
+			&& Objects.equals(lastname, other.lastname) && Objects.equals(password, other.password)
+			&& Objects.equals(reimbursements, other.reimbursements) && Objects.equals(role, other.role)
+			&& Objects.equals(username, other.username);
 }
 @Override
 public String toString() {

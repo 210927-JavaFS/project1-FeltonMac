@@ -2,9 +2,12 @@ package com.revature.daos;
 
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.revature.models.Reimbursement;
+import com.revature.models.User;
 import com.revature.utils.HibernateUtil;
 
 public class ReimbursementDAOImp implements ReimbursementDAO {
@@ -12,8 +15,12 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 	@Override
 	public List<Reimbursement> getAll() {
 		Session session = HibernateUtil.getSession();
-		List<Reimbursement> reimbList = session.createQuery("From Reimbursement").list();
-		
+		List<Reimbursement> reimbList = session.createQuery("From reimbursements").list();
+//		for (Reimbursement r : reimbList) {
+//				User user= session.get(User.class,r.getAuthor());
+//				r.setUser(user);
+//				System.out.println(user);
+		// }
 		return reimbList;
 	}
 
@@ -26,24 +33,48 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 	}
 
 	@Override
-	public void insertReimb(Reimbursement reimb) {	
-		Session session = HibernateUtil.getSession();
-		session.save(reimb);
-		HibernateUtil.closeSession();// not normaly done here 
+	public boolean insertReimb(Reimbursement reimb) {	
+		try {
+			Session session = HibernateUtil.getSession();
+			Transaction tx = session.beginTransaction();
+			session.save(reimb);
+			tx.commit();
+			//HibernateUtil.closeSession();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
-	public void updateReimb(Reimbursement reimb) {
-		Session session = HibernateUtil.getSession();
-		session.merge(reimb);
-		HibernateUtil.closeSession();
+	public boolean updateReimb(Reimbursement reimb) {
+		try {
+			Session session = HibernateUtil.getSession();
+			Transaction tx = session.beginTransaction();
+			session.merge(reimb);
+			tx.commit();
+			//HibernateUtil.closeSession();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
-	public void deleteReimb(Reimbursement reimb) {
-		Session session = HibernateUtil.getSession();
-		session.delete(reimb);
-		HibernateUtil.closeSession();
+	public boolean deleteReimb(Reimbursement reimb) {
+		try {
+			Session session = HibernateUtil.getSession();
+			Transaction tx = session.beginTransaction();
+			session.delete(reimb);
+			tx.commit();
+			//HibernateUtil.closeSession();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

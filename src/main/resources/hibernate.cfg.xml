@@ -23,7 +23,11 @@
 		
 		<!-- Mapping Entity Classes (Making the SF aware of these entities) -->
 		<mapping class="com.revature.models.Reimbursement" /> <!-- change  user --> 
-		<mapping class="com.revature.models.User" /> <!-- change reimbursement --> 
+		<mapping class="com.revature.models.User" /> 
+		<mapping class="com.revature.models.Type" /> <!-- change  user --> 
+		<mapping class="com.revature.models.Role" /> 
+		<mapping class="com.revature.models.Status" /> 
+		 
 	</session-factory>
 
 </hibernate-configuration>

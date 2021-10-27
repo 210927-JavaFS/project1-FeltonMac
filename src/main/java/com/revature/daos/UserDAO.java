@@ -8,6 +8,8 @@ public interface UserDAO {
 	List<User> findAll();
     User findById(int id);
     boolean addUser(User user);// boolean made just voids for now 
-	void insertUser(User user);
-	void deleteUser(User user);
+	boolean insertUser(User user);
+	boolean deleteUser(User user);
+	boolean updateUser(User user);
+	public boolean authenticate(String username,String Password);
 }

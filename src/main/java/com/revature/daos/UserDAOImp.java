@@ -2,12 +2,15 @@ package com.revature.daos;
 
 import java.util.List;
 
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import org.hibernate.HibernateException;
+
+//import javax.persistence.TypedQuery;
+//import javax.persistence.criteria.CriteriaBuilder;
+//import javax.persistence.criteria.CriteriaQuery;
+//import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.revature.models.User;
 import com.revature.utils.HibernateUtil;
@@ -17,10 +20,10 @@ public class UserDAOImp implements UserDAO {
 	@Override
 	public List<User> findAll() {
 		Session session = HibernateUtil.getSession();
-		List<User> list=  null;
-		
+		List<User> list=  session.createQuery("From users").list();
 
 		return list;
+	}
 		/* never really use but can with out sql syntax
 		Session session = HibernateUtil.getSession();
 		List<User> list;
@@ -33,7 +36,7 @@ public class UserDAOImp implements UserDAO {
 		
 		return list;
 		*/
-	}
+	
 
 	@Override
 	public User findById(int id) {
@@ -43,26 +46,74 @@ public class UserDAOImp implements UserDAO {
 	}
 
 	@Override
-	public void insertUser(User user) {
-		Session session = HibernateUtil.getSession();
-		session.save(user);
-		HibernateUtil.closeSession();
+	public boolean insertUser(User user) {
+		try {
+			Session session = HibernateUtil.getSession();
+			Transaction tx = session.beginTransaction();
+			session.save(user);
+			tx.commit();
+			HibernateUtil.closeSession();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
-	public void deleteUser(User user) {
-		Session session = HibernateUtil.getSession();
-		session.delete(user);
-		HibernateUtil.closeSession();
+	public boolean deleteUser(User user) {
+		try {
+			Session session = HibernateUtil.getSession();
+			Transaction tx = session.beginTransaction();
+			session.delete(user);
+			tx.commit();
+			HibernateUtil.closeSession();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
-	public void updateUser(User user){
-		Session session = HibernateUtil.getSession();
-		session.merge(user);
-		HibernateUtil.closeSession();
+	public boolean updateUser(User user){
+		try {
+			Session session = HibernateUtil.getSession();
+			Transaction tx = session.beginTransaction();
+			session.merge(user);
+			tx.commit();
+			HibernateUtil.closeSession();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	@Override
 	public boolean addUser(User user) {
-		// TODO Auto-generated method stub
+		try {
+			Session session = HibernateUtil.getSession();
+			Transaction tx = session.beginTransaction();
+			session.save(user);
+			tx.commit();
+			//HibernateUtil.closeSession();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public boolean authenticate(String username,String Password) {
+		try{
+			Session session = HibernateUtil.getSession();
+			User user = session.get(User.class, username);
+			if( user.hashCode()==username.hashCode()) {
+				return true;
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+			System.out.println(" no user found ");
+			return false;
+		}
 		return false;
 	}
+	
 }
