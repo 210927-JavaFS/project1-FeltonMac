@@ -11,6 +11,77 @@
         <button id=" buttonuser" class = "btn btn-success" > user button</button>
         <button id=" buttonreimbursement" class = "btn btn-success" >  reimbursement button</button>
 
+<body class="container-fluid">
+  <div class="formClass">
+    <form class="form-control">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password">
+    </form>
+    <button class="btn btn-danger" id="loginButton">Login</button>
+  </div>
+  <div class="row" id="buttonRow">
+
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="col-sm-1">User ID</th>
+        <th class="col-sm-2">Username</th>
+        <th class="col-sm-1">First Name</th>
+        <th class="col-sm-1">Last Name</th>
+        <th class="col-sm-1">role</th>
+        <th class="col-sm-1">email</th>
+        <th class="col-sm-6">reimbursement</th>
+      </tr>
+    </thead>
+    <tbody id="userBody">
+    </tbody>
+  </table>
+  <br>
+  <br>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="col-sm-2">Reimbursement ID</th>
+        <th class="col-sm-2">amount$</th>
+        <th class="col-sm-2">Submitted</th>
+        <th class="col-sm-2">resolved</th>
+        <th class="col-sm-2">Author id</th>
+        <th class="col-sm-2">resolver id</th>
+        <th class="col-sm-2">status</th>
+        <th class="col-sm-2">type</th>
+      </tr>
+    </thead>
+    <tbody id="ReimbBody">
+    </tbody>
+  </table>
+  <br>
+  <br>
+
+  <form class="form-control">
+    <label for="homeName">New User name</label>
+    <input type="text" id="homeName" name="homeName">
+    <label for="homeStreetNum">Home's Street Number</label>
+    <input type="text" id="homeStreetNum" name="homeStreetNum">
+    <label for="homeStreetName">Home's Street Name</label>
+    <input type="text" id="homeStreetName" name="homeStreetName">
+    <label for="homeCity">Home's City</label>
+    <input type="text" id="homeCity" name="homeCity">
+    <label for="homeRegion">Home's Region</label>
+    <input type="text" id="homeRegion" name="homeRegion">
+    <label for="homeZip">Home's Zip Code</label>
+    <input type="text" id="homeZip" name="homeZip">
+    <label for="homeCountry">Home's Country</label>
+    <input type="text" id="homeCountry" name="homeCountry">
+  </form>
+  <button class="btn btn-primary" id="addHomeButton">Add Your Home</button>
+
+  <script src="HelloFS.js"></script>
+</body>
+</html>
     </div>
     
 </body>

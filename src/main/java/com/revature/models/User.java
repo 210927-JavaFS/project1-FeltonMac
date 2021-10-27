@@ -25,7 +25,7 @@ int id;
 @Column(nullable=false)
 private String username;
 @Column(nullable=false)
-private String password;
+private int password;
 private String firstname;
 private String lastname;
 @Column(nullable=false)
@@ -38,7 +38,7 @@ List<Reimbursement> reimbursements;
 Role role;
 
 
-public User(String username, String password, String firstname, String lastname, String email,
+public User(String username, int password, String firstname, String lastname, String email,
 		List<Reimbursement> reimbursements, Role role) {
 	super();
 	this.username = username;
@@ -49,7 +49,7 @@ public User(String username, String password, String firstname, String lastname,
 	this.reimbursements = reimbursements;
 	this.role = role;
 }
-public User(int id, String username, String password, String firstname, String lastname, String email,
+public User(int id, String username, int password, String firstname, String lastname, String email,
 		List<Reimbursement> reimbursements, Role role) {
 	super();
 	this.id = id;
@@ -71,7 +71,7 @@ public int getId() {
 public String getUsername() {
 	return username;
 }
-public String getPassword() {
+public int getPassword() {
 	return password;
 }
 public String getFirstname() {
@@ -92,7 +92,7 @@ public void setId(int id) {
 public void setUsername(String username) {
 	this.username = username;
 }
-public void setPassword(String password) {
+public void setPassword(int password) {
 	this.password = password;
 }
 public void setFirstname(String firstname) {

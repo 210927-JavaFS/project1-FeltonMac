@@ -20,7 +20,7 @@ public class UserDAOImp implements UserDAO {
 	@Override
 	public List<User> findAll() {
 		Session session = HibernateUtil.getSession();
-		List<User> list=  session.createQuery("From users").list();
+		List<User> list=  session.createQuery("FROM User").list();
 
 		return list;
 	}
@@ -37,7 +37,12 @@ public class UserDAOImp implements UserDAO {
 		return list;
 		*/
 	
-
+	public User findByUsername(String username) {
+		Session session = HibernateUtil.getSession();
+		List<User> list=  session.createQuery("FROM User WHERE username =" + username).list();
+		User user = list.get(0);
+		return user;
+	}
 	@Override
 	public User findById(int id) {
 		Session session = HibernateUtil.getSession();
@@ -101,19 +106,6 @@ public class UserDAOImp implements UserDAO {
 			return false;
 		}
 	}
-	public boolean authenticate(String username,String Password) {
-		try{
-			Session session = HibernateUtil.getSession();
-			User user = session.get(User.class, username);
-			if( user.hashCode()==username.hashCode()) {
-				return true;
-			}
-		}catch(NullPointerException e) {
-			e.printStackTrace();
-			System.out.println(" no user found ");
-			return false;
-		}
-		return false;
-	}
+	
 	
 }

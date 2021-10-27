@@ -36,7 +36,7 @@ String description;
 @JoinColumn(name="id")
 User author;
 @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-@JoinColumn(name="id")
+@JoinColumn(name="id",updatable= false,insertable = false)
 User resolver;
 @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 @JoinColumn(name="status_id")

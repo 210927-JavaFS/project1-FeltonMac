@@ -2,9 +2,12 @@ package com.revature.services;
 
 import java.util.List;
 
+import org.hibernate.Session;
+
 import com.revature.daos.UserDAO;
 import com.revature.daos.UserDAOImp;
 import com.revature.models.User;
+import com.revature.utils.HibernateUtil;
 
 public class UserService {
 	UserDAO UDAO = new UserDAOImp();
@@ -32,6 +35,25 @@ public class UserService {
 	public boolean updateUser(User user) {
 		return UDAO.updateUser(user);
 	}
+	
+	public boolean authenticate(String username,String password) {
+		try{
+			User user = UDAO.findByUsername(username);
+			if (user.getPassword()==(password.hashCode())) {
+				return true;
+			}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+			System.out.println(" no user found ");
+			return false;
+		}
+		return false;
+	}
+	
+	
+	
+	
+	
 
 //	public User authenticate(String username, String password ) {
 //		if(UDAO.authenticate(username,password)) {

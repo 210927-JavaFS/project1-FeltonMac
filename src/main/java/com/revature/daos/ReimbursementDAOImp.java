@@ -15,7 +15,7 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 	@Override
 	public List<Reimbursement> getAll() {
 		Session session = HibernateUtil.getSession();
-		List<Reimbursement> reimbList = session.createQuery("From reimbursements").list();
+		List<Reimbursement> reimbList = session.createQuery("From Reimbursement").list();
 //		for (Reimbursement r : reimbList) {
 //				User user= session.get(User.class,r.getAuthor());
 //				r.setUser(user);
