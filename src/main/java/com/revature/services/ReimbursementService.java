@@ -24,7 +24,8 @@ public class ReimbursementService {
 	public boolean insertReimbursement(Reimbursement reimbursement) {
 		return RDAO.insertReimb(reimbursement);
 	}
-	public boolean deleteReimbursement(Reimbursement reimbursement) {
+	public boolean deleteReimbursement(int reimbursementint) {
+		Reimbursement reimbursement= findById(reimbursementint);
 		return RDAO.deleteReimb(reimbursement);
 	}
 	public boolean updateReimbursement(Reimbursement reimbursement) {

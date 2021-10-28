@@ -29,7 +29,8 @@ public class UserService {
 	public boolean insertUser(User user) {
 		return UDAO.insertUser(user);
 	}
-	public boolean deleteUser(User user) {
+	public boolean deleteUser(int userid) {
+		User user= findById(userid);
 		return UDAO.deleteUser(user);
 	}
 	public boolean updateUser(User user) {
