@@ -28,7 +28,6 @@ private String username;
 private int password;
 private String firstname;
 private String lastname;
-@Column(nullable=false)
 private String email;
 
 @OneToMany(mappedBy="re_id", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
