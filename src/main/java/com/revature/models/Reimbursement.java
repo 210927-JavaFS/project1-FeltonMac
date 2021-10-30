@@ -23,12 +23,12 @@ public class Reimbursement {
 //	components RESTfully. Passwords shall be encrypted in Java and securely stored in the database.
 //	The middle tier shall follow proper layered architecture, have reasonable
 //	(~70%) test coverage of the service layer, and implement Logback for appropriate logging.
-	
+	//var dateString = new Date().toISOString().substring(0,10);
 @Id
 @GeneratedValue()
 private	int re_id;
 double amount;//could change to int 
-LocalDateTime  submitted;
+LocalDateTime submitted;
 LocalDateTime  resolved;
 String description;
 //Blob receipt;
@@ -38,15 +38,15 @@ User author;
 @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 @JoinColumn(name="id",updatable= false,insertable = false)
 User resolver;
-@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+@ManyToOne(fetch=FetchType.LAZY)//cascade=CascadeType.ALL
 @JoinColumn(name="status_id")
 Status status;
-@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+@ManyToOne(fetch=FetchType.LAZY )//cascade=CascadeType.ALL
 @JoinColumn(name="type_id")
 Type type;
 ;
-
-
+// new Date().toLocaleString();
+//
 public Reimbursement(int re_id, double amount, LocalDateTime submitted, LocalDateTime resolved, String description,
 		User author, User resolver, Status status, Type type) {
 	super();

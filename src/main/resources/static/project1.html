@@ -38,7 +38,7 @@
           <th class="col-sm-2">Last Name</th>
           <th class="col-sm-2">Role</th>
           <th class="col-sm-2">Email</th>
-          <th class="col-sm-5">Reimbursement</th>
+          <th class="col-sm-3">Reimbursement</th>
         </tr>
       </thead>
       <tbody id="userBody">
@@ -66,7 +66,7 @@
     <br>
 
     <form class="form-control">
-      <label for="username" color=rgb(3,50,4)>Username</label>
+      <label for="username">Username</label>
       <input type="text" id="username" name="username">
       <label for="firstname">First Name</label>
       <input type="text" id="firstname" name="firstname">
@@ -84,7 +84,47 @@
     <button class="btn btn-primary" id="addUserButton">Add User</button>
     <br>
     <button class="btn btn-primary" id="findUserButton">Enter a Username </button>
+  
+
+
+
+
+    <form class="form-control">
+      <label for="reimb">Reimbursement number</label>
+      <input type="text" id="reimb" name="reimb">
+      <label for="amount">amount requested</label>
+      <input type="text" id="amount" name="amount">
+      <br>
+      <label for="submitted">Submitted</label>
+      <input type="text" id="submitted" name="submitted">
+      <label for="description">Description</label>
+      <input type="text" id="description" name="description">
+      <br>
+      <label for="status">status</label>
+      <input type="text" id="status" name="status">
+      <label for="type">Type</label>
+      <input type="text" id="type" name="type">
+    </form>
+    <button class="btn btn-primary" id="addReimbursement">add Reimbursementr</button>
+    <br>
+    <button class="btn btn-primary" id="findReimbursement">Enter reimbursemnt ID </button>
     <script src="project1.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </body>
 
 </html>

@@ -33,11 +33,11 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 	}
 
 	@Override
-	public boolean insertReimb(Reimbursement reimb) {	
+	public boolean insertReimb(Reimbursement reimb) {
 		try {
 			Session session = HibernateUtil.getSession();
 			Transaction tx = session.beginTransaction();
-			session.save(reimb);
+			session.saveOrUpdate(reimb);
 			tx.commit();
 			//HibernateUtil.closeSession();
 			return true;

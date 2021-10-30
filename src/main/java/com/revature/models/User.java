@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,17 +23,17 @@ public class User {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 int id;
-@Column(nullable=false)
+//@Column(nullable=false)
 private String username;
-@Column(nullable=false)
+//@Column(nullable=false)
 private int password;
 private String firstname;
 private String lastname;
 private String email;
 
-@OneToMany(mappedBy="re_id", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+@OneToMany(mappedBy="re_id", fetch=FetchType.EAGER )//cascade=CascadeType.ALL
 List<Reimbursement> reimbursements;
-@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+@ManyToOne(fetch=FetchType.LAZY )//cascade=CascadeType.ALL
 @JoinColumn(name="roleid")
 Role role;
 
@@ -105,6 +106,9 @@ public void setEmail(String email) {
 }
 public void setRole(Role role) {
 	this.role = role;
+}
+public void setReimbursements(List<Reimbursement> list) {
+	this.reimbursements = list;
 }
 @Override
 public int hashCode() {

@@ -1,14 +1,13 @@
 const URL = "http://localhost:8081/";
-document.getElementsByClassName
-document.app
-let buttonRow = document.getElementById("buttonRow");
-let avengerButton = document.createElement("button");
-let homeButton = document.createElement("button");
-let addHomeButton = document.getElementById('addHomeButton');
-let loginButton = document.getElementById('loginButton');
 
-avengerButton.onclick = getAvengers;
-homeButton.onclick = getHomes;
+let buttonrow = document.getElementById("buttonRow");
+let UButton = document.createElement('userRetrieveButton');
+let RButton = document.createElement('reimbursementRetrieveButton');
+let addButton = document.getElementById('addUserButton');
+let loginButton = document.getElementById('loginButton');
+let userFind = document.
+RButton.onclick = getReimbursements
+UButton.onclick = getUsers;
 addHomeButton.onclick = addHome;
 loginButton.onclick = loginToApp; 
 
@@ -40,65 +39,70 @@ async function loginToApp(){
   }
 }
 
-async function getAvengers(){
-  let response = await fetch(URL+"avengers", {credentials:"include"});
+async function getUsers(){
+  let response = await fetch(URL+"users", {credentials:"include"});
 
   if(response.status === 200){
     let data = await response.json();
-    populateAvengersTable(data);
+    populateUsersTable(data);
   }else{
-    console.log("The Avengers are too busy saving the planet to respond.");
+    console.log("no users returned.");
   }
 }
 
-function populateAvengersTable(data){
-  let tbody = document.getElementById("avengerBody");
+function populateUsersTable(data){
+  let tbody = document.getElementById("userBody");
 
   tbody.innerHTML="";
 
-  for(let avenger of data){
+  for(let user of data){
     let row = document.createElement("tr");
 
-    for(let cell in avenger){
+    for(let cell in user){
       let td = document.createElement("td");
-      if(cell!="home"){
-        td.innerText=avenger[cell];
-      }else if(avenger[cell]){
-        td.innerText = `${avenger[cell].name}: ${avenger[cell].streetNumber} ${avenger[cell].streetName} ${avenger[cell].city } ${avenger[cell].region}, ${avenger[cell].zip} ${avenger[cell].country}`
-      }
+      if(cell!="reimbursements"|| cell!="role"){
+        td.innerText=user[cell];
+      }else if(cell=="reimbursements"){//${user[cell].firstname}
+        td.innerText = `${user[cell].Re_id}`
+      }else if(cell=="role"){
+        td.innerText = `${user[cell].roleString}`
       row.appendChild(td);
     }
     tbody.appendChild(row);
   }
 }
 
-async function getHomes(){
-  let response = await fetch(URL+"homes", {credentials:"include"});
+async function getReimbursements(){
+  let response = await fetch(URL+"reimbursements", {credentials:"include"});
   if(response.status===200){
     let data = await response.json();
-    populateHomeTable(data);
+    populateReimbursementTable(data);
   }else{
-    console.log("Homes not available.");
+    console.log("Reimbursements not available");
   }
 }
 
-function populateHomeTable(data){
-  let tbody = document.getElementById("homeBody");
+function populateReimbursementTable(data){
+  let tbody = document.getElementById("reimBody");
 
   tbody.innerHTML="";
-
-  for(let home of data){
+//var dateString = new Date().toISOString().substring(0,10);
+  for(let Reimb of data){
     let row = document.createElement("tr");
-    for(let cell in home){
+    for(let cell in reimb){
+      if (cell!="author" || cell != "resolver" || cell !="type" || cell !="status" ){
+        if(cell=="submitted" || cell == "resolve"){
+           cell = new Date().toISOString().substring(0,10);
+        }
       let td = document.createElement("td");
-      td.innerText = home[cell];
+      td.innerText = reimb[cell];
       row.appendChild(td);
     }
     tbody.appendChild(row);
   }
 }
 
-function getNewHome(){
+function userFromInput(){
   let newName = document.getElementById("homeName").value;
   let newStreetNum = document.getElementById("homeStreetNum").value; 
   let newStreetName = document.getElementById("homeStreetName").value;
@@ -119,20 +123,43 @@ function getNewHome(){
 
   return home;
 }
+function reimbursementFromInput(){
+  let newAmount = document.getElementById("amountInput").value;
+  let newSubmitted = document.getElementById("submittedInput").value; 
+  let newresolved = document.getElementById
 
-async function addHome(){
-  let home = getNewHome();
+  let newStreetName = document.getElementById("resolvedInput").value;
+  let newCity = document.getElementById("Input").value;
+  let newRegion = document.getElementById("Input").value;
+  let newZip = document.getElementById("Input").value;
+  let newCounty = document.getElementById("Input").value;
 
-  let response = await fetch(URL+"homes", {
+  let newReimb =  {
+    name:newName,
+    streetNumber:newStreetNum,
+    streetName:newStreetName,
+    city:newCity,
+    region:newRegion,
+    zip:newZip,
+    country:newCounty
+  }
+
+  return home;
+}
+
+async function addreimbursement(){
+  let reimb = getReimbursements();
+
+  let response = await fetch(URL+"reimbursements", {
     method:'POST',
-    body:JSON.stringify(home),
+    body:JSON.stringify(reimb),
     credentials:"include"
   });
 
   if(response.status===201){
-    console.log("Home created successfully.");
+    console.log("reimb added sussesfully");
   }else{
-    console.log("Something went wrong creating your home.")
+    console.log("Something went wrong creating the Reimbursement.")
   }
 
 }

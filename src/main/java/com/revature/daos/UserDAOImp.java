@@ -55,7 +55,7 @@ public class UserDAOImp implements UserDAO {
 		try {
 			Session session = HibernateUtil.getSession();
 			Transaction tx = session.beginTransaction();
-			session.save(user);
+			session.saveOrUpdate(user);
 			tx.commit();
 			HibernateUtil.closeSession();
 			return true;
