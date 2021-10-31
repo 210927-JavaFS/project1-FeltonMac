@@ -3,16 +3,26 @@ const URL = "http://localhost:8081/";
 let buttonrow = document.getElementById("buttonRow");
 let UButton = document.createElement('userRetrieveButton');
 let RButton = document.createElement('reimbursementRetrieveButton');
-let addButton = document.getElementById('addUserButton');
+let userAdd = document.getElementById('addUserButton');
+let userFind = document.getElementById('findUserButton');
 let loginButton = document.getElementById('loginButton');
-let userFind = document.
-RButton.onclick = getReimbursements
-UButton.onclick = getUsers;
-addHomeButton.onclick = addHome;
-loginButton.onclick = loginToApp; 
+let reimbursementFind = document.getElementById("findReimbursement");
+let reimbursementAdd = document.getElementById("addReimbursement");
 
-avengerButton.innerText = "Avengers Assemble";
-homeButton.innerText = "See Homes";
+let approveButton = document.getElementById("approve");
+
+
+
+
+RButton.onclick = getReimbursementList();
+UButton.onclick = getUsersList();
+userAdd.onclick = addUser();
+userFind.onclick = findUsers();
+loginButton.onclick = loginToApp(); 
+reimbursementFind.onclick = findReimbursemrnt();
+reimbursementAdd.onclick = addReimbursement();
+RButton.innerText = "Reimbursement list";
+UButton.innerText = "user list";
 
 async function loginToApp(){
   let user = {
@@ -28,8 +38,8 @@ async function loginToApp(){
 
   if(response.status===200){
     document.getElementsByClassName("formClass")[0].innerHTML = '';
-    buttonRow.appendChild(avengerButton);
-    buttonRow.appendChild(homeButton);
+    buttonRow.appendChild(UButton);
+    buttonRow.appendChild(Rbutton);
   }
   else{
     let para = document.createElement("p");
@@ -39,7 +49,7 @@ async function loginToApp(){
   }
 }
 
-async function getUsers(){
+async function getUsersList(){
   let response = await fetch(URL+"users", {credentials:"include"});
 
   if(response.status === 200){
@@ -63,16 +73,17 @@ function populateUsersTable(data){
       if(cell!="reimbursements"|| cell!="role"){
         td.innerText=user[cell];
       }else if(cell=="reimbursements"){//${user[cell].firstname}
-        td.innerText = `${user[cell].Re_id}`
+        td.innerText = `${user[cell][0].Re_id}`// this may need to getinside a list 
       }else if(cell=="role"){
         td.innerText = `${user[cell].roleString}`
+      }
       row.appendChild(td);
-    }
+      }
     tbody.appendChild(row);
   }
 }
 
-async function getReimbursements(){
+async function getReimbursementList(){
   let response = await fetch(URL+"reimbursements", {credentials:"include"});
   if(response.status===200){
     let data = await response.json();
@@ -87,14 +98,19 @@ function populateReimbursementTable(data){
 
   tbody.innerHTML="";
 //var dateString = new Date().toISOString().substring(0,10);
-  for(let Reimb of data){
+  for(let reimb of data){
     let row = document.createElement("tr");
     for(let cell in reimb){
-      if (cell!="author" || cell != "resolver" || cell !="type" || cell !="status" ){
-        if(cell=="submitted" || cell == "resolve"){
-           cell = new Date().toISOString().substring(0,10);
-        }
       let td = document.createElement("td");
+      if (cell!="author" || cell != "resolver"){
+        td.innerText = reimb[cell].id;
+      }else if(cell=="submitted" || cell == "resolved"){
+        td.innerText = new Date(reimb[cell]).toISOString().substring(0,10);// this might be a problem 
+      }else if(cell =="type"){
+        td.innerText =reimb[cell].typestring;
+      }else if(cell =="status"){
+        td.innerText =reimb[cell].status;
+      }
       td.innerText = reimb[cell];
       row.appendChild(td);
     }
@@ -103,56 +119,80 @@ function populateReimbursementTable(data){
 }
 
 function userFromInput(){
-  let newName = document.getElementById("homeName").value;
-  let newStreetNum = document.getElementById("homeStreetNum").value; 
-  let newStreetName = document.getElementById("homeStreetName").value;
-  let newCity = document.getElementById("homeCity").value;
-  let newRegion = document.getElementById("homeRegion").value;
-  let newZip = document.getElementById("homeZip").value;
-  let newCounty = document.getElementById("homeCountry").value;
+  //let newName = document.getElementById("").value;
+  let newUsername = document.getElementById("username").value; 
+  let newFirstname = document.getElementById("firstname").value;
+  let newLastname = document.getElementById("lastname").value;
+  let newEmail = document.getElementById("email").value;
+  let newReimbursement  = document.getElementById("reimbursement").value;
+  let newPassword=null;
+  let newRole=null
 
-  let home =  {
-    name:newName,
-    streetNumber:newStreetNum,
-    streetName:newStreetName,
-    city:newCity,
-    region:newRegion,
-    zip:newZip,
-    country:newCounty
+  let newUser =  {
+    username:newUsername,
+    password=newPassword,
+    firstname:newFirstname,
+    lastname:newLastname,
+    email:newEmail,
+    reimbursements:[{
+        re_id:newReimbursement
+      }],
+    role:{
+      role:newRole
+    }
   }
 
-  return home;
+  return newUser;
 }
 function reimbursementFromInput(){
   let newAmount = document.getElementById("amountInput").value;
-  let newSubmitted = document.getElementById("submittedInput").value; 
-  let newresolved = document.getElementById
+  let newSubmitted = null; 
+  let newresolved = null;
+  let newAuthor = null;// this should be who ever is signed in 
+  let newResolver = null;
+  let newDescription = document.getElementById("descriptionInput").value;
+  let newType = document.getElementById("typeInput").value;
+  let newStatus = null;
 
-  let newStreetName = document.getElementById("resolvedInput").value;
-  let newCity = document.getElementById("Input").value;
-  let newRegion = document.getElementById("Input").value;
-  let newZip = document.getElementById("Input").value;
-  let newCounty = document.getElementById("Input").value;
-
-  let newReimb =  {
-    name:newName,
-    streetNumber:newStreetNum,
-    streetName:newStreetName,
-    city:newCity,
-    region:newRegion,
-    zip:newZip,
-    country:newCounty
-  }
-
-  return home;
+  let newReimb = {
+    amount:newAmount, 
+    submitted:newSubmitted,
+    resolved:newresolved,
+    description:newDescription,
+    author:newAuthor,
+    resolver:newResolver,
+    status:newStatus,
+    type: {
+        typestring:newType
+    }
+     //should I add id?
 }
 
-async function addreimbursement(){
-  let reimb = getReimbursements();
+  return newReimb;
+}
 
-  let response = await fetch(URL+"reimbursements", {
+async function addReimbursement(){
+  let reimb = reimbursementFromInput();
+
+  let response = await fetch(URL+`reimbursements/${reimb}`, {
     method:'POST',
     body:JSON.stringify(reimb),
+    credentials:"include"
+  });
+
+  if(response.status===201){
+    console.log("reimb added sussesfully");
+  }else{
+    console.log("Something went wrong creating the Reimbursement.")
+  }
+
+}
+async function addUser(){
+  let usertoadd = userFromInput();
+
+  let response = await fetch(URL+`users/${usertoadd}`, {
+    method:'POST',
+    body:JSON.stringify(usertoadd),
     credentials:"include"
   });
 

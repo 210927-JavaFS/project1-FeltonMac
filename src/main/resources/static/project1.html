@@ -10,7 +10,7 @@
 </head>
 
 <body class="container-fluid">
-  <div class="row">
+  <div class="formClass">
     <button id=" userRetrieveButton" class="btn btn-success"> User list </button>
     <button id=" reimbursementRetrieveButton" class="btn btn-success"> Reimbursement list </button>
   </div>
@@ -32,12 +32,12 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="col-sm-3">User ID</th>
+          <th class="col-sm-2">User ID</th>
           <th class="col-sm-3">Username</th>
           <th class="col-sm-2">First Name</th>
           <th class="col-sm-2">Last Name</th>
           <th class="col-sm-2">Role</th>
-          <th class="col-sm-2">Email</th>
+          <th class="col-sm-3">Email</th>
           <th class="col-sm-3">Reimbursement</th>
         </tr>
       </thead>
@@ -49,12 +49,12 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="col-sm-2">Reimbursement ID</th>
+          <th class="col-sm-1">Reimbursement ID</th>
           <th class="col-sm-2">Amount$</th>
           <th class="col-sm-2">Submitted</th>
-          <th class="col-sm-2">resolved</th>
-          <th class="col-sm-2">Author id</th>
-          <th class="col-sm-2">resolver id</th>
+          <th class="col-sm-2">Resolved</th>
+          <th class="col-sm-1">Author id</th>
+          <th class="col-sm-1">resolver id</th>
           <th class="col-sm-2">status</th>
           <th class="col-sm-2">type</th>
         </tr>
@@ -78,7 +78,7 @@
       <br>
       <label for="email">EMAIL</label>
       <input type="text" id="email" name="email">
-      <label for="reimbursement">reimbursement</label>
+      <label for="reimbursement">reimbursement ID</label>
       <input type="text" id="reimbursement" name="reimbursement">
     </form>
     <button class="btn btn-primary" id="addUserButton">Add User</button>
@@ -92,39 +92,27 @@
     <form class="form-control">
       <label for="reimb">Reimbursement number</label>
       <input type="text" id="reimb" name="reimb">
+      <br>
       <label for="amount">amount requested</label>
       <input type="text" id="amount" name="amount">
       <br>
-      <label for="submitted">Submitted</label>
-      <input type="text" id="submitted" name="submitted">
+      <!-- <label for="submitted">Submitted</label> 
+      <input type="text" id="submitted" name="submitted">-->
       <label for="description">Description</label>
       <input type="text" id="description" name="description">
       <br>
-      <label for="status">status</label>
-      <input type="text" id="status" name="status">
+      <!--<label for="status">Status</label>
+      <input type="text" id="status" name="status">-->
       <label for="type">Type</label>
       <input type="text" id="type" name="type">
     </form>
-    <button class="btn btn-primary" id="addReimbursement">add Reimbursementr</button>
+    <button class="btn btn-primary" id="addReimbursement">Add Reimbursement</button>
     <br>
-    <button class="btn btn-primary" id="findReimbursement">Enter reimbursemnt ID </button>
+    <button class="btn btn-primary" id="findReimbursement">Enter Reimbursemnt ID </button>
+    <br>
+    <button class="btn btn-primary" id="approve">approve reimbursement </button>
+    
     <script src="project1.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   </body>
 
 </html>
