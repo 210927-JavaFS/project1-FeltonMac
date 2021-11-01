@@ -3,10 +3,10 @@ package com.revature.models;
 import java.util.Objects;
 
 public class LoginUser {
-	private String username;
-	private String password;// you might change this to a string and then hash later
+	 String username;
+	 String password;// you might change this to a string and then hash later
 	
-	private String role;
+	 String role;
 	
 	public LoginUser() {
 		super();

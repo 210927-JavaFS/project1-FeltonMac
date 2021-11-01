@@ -39,7 +39,7 @@ public class UserDAOImp implements UserDAO {
 	@Override
 	public User findByUsername(String username) {
 		Session session = HibernateUtil.getSession();
-		List<User> list=  session.createQuery("FROM User WHERE username =" + username).list();
+		List<User> list=  session.createQuery("FROM User WHERE username ='"+ username + "'").list();
 		User user = list.get(0);
 		return user;
 	}

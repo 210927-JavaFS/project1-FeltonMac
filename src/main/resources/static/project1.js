@@ -6,7 +6,7 @@ let RButton = document.createElement('reimbursementRetrieveButton');
 let userAdd = document.getElementById('addUserButton');
 let userFind = document.getElementById('findUserButton');
 let loginButton = document.getElementById('loginButton');
-let reimbursementFind = document.getElementById("findReimbursement");
+let reimbursementFind = document.getElementById("findByIDReimbursement");
 let reimbursementAdd = document.getElementById("addReimbursement");
 
 let approveButton = document.getElementById("approve");
@@ -14,20 +14,20 @@ let approveButton = document.getElementById("approve");
 
 
 
-RButton.onclick = getReimbursementList();
-UButton.onclick = getUsersList();
-userAdd.onclick = addUser();
-userFind.onclick = findUsers();
-loginButton.onclick = loginToApp(); 
-reimbursementFind.onclick = findReimbursemrnt();
-reimbursementAdd.onclick = addReimbursement();
+RButton.onclick = getReimbursementList;
+UButton.onclick = getUsersList;
+userAdd.onclick = addUser;
+userFind.onclick = findUser;
+loginButton.onclick = loginToApp; 
+reimbursementFind.onclick = findReimbursement;
+reimbursementAdd.onclick = addReimbursement;
 RButton.innerText = "Reimbursement list";
 UButton.innerText = "user list";
 
 async function loginToApp(){
   let user = {
-    username:document.getElementById("username").value,
-    password:document.getElementById("password").value
+    username:document.getElementById("uname").value,
+    password:document.getElementById("pword").value
   }
 
   let response = await fetch(URL+"login", {
@@ -39,7 +39,7 @@ async function loginToApp(){
   if(response.status===200){
     document.getElementsByClassName("formClass")[0].innerHTML = '';
     buttonRow.appendChild(UButton);
-    buttonRow.appendChild(Rbutton);
+    buttonRow.appendChild(RButton);
   }
   else{
     let para = document.createElement("p");
@@ -120,7 +120,7 @@ function populateReimbursementTable(data){
 
 function userFromInput(){
   //let newName = document.getElementById("").value;
-  let newUsername = document.getElementById("username").value; 
+  let newUsername = document.getElementById("name").value; 
   let newFirstname = document.getElementById("firstname").value;
   let newLastname = document.getElementById("lastname").value;
   let newEmail = document.getElementById("email").value;
@@ -130,7 +130,7 @@ function userFromInput(){
 
   let newUser =  {
     username:newUsername,
-    password=newPassword,
+    password:newPassword,
     firstname:newFirstname,
     lastname:newLastname,
     email:newEmail,
@@ -145,6 +145,7 @@ function userFromInput(){
   return newUser;
 }
 function reimbursementFromInput(){
+  let newReimbID = document.getElementById("reimbnumber").value;
   let newAmount = document.getElementById("amountInput").value;
   let newSubmitted = null; 
   let newresolved = null;
@@ -155,6 +156,7 @@ function reimbursementFromInput(){
   let newStatus = null;
 
   let newReimb = {
+    re_id : newReimbID,
     amount:newAmount, 
     submitted:newSubmitted,
     resolved:newresolved,
@@ -174,7 +176,7 @@ function reimbursementFromInput(){
 async function addReimbursement(){
   let reimb = reimbursementFromInput();
 
-  let response = await fetch(URL+`reimbursements/${reimb}`, {
+  let response = await fetch(URL+"reimbursements/:"+reimb, {
     method:'POST',
     body:JSON.stringify(reimb),
     credentials:"include"
@@ -202,4 +204,27 @@ async function addUser(){
     console.log("Something went wrong creating the Reimbursement.")
   }
 
+}
+
+async function findReimbursement(){
+  let reimb = reimbursementFromInput();
+
+  let response = await fetch(URL+"reimbursements/"+reimb.re_id, {credentials:"include"});
+  if(response.status===200){
+    let data = await response.json();
+    populateReimbursementTable(data);
+  }else{
+    console.log("Reimbursements not available");
+  }
+}
+async function findUser(){
+  let reimb = userFromInput();
+
+  let response = await fetch(URL+"reimbursements/"+reimb.re_id, {credentials:"include"});
+  if(response.status===200){
+    let data = await response.json();
+    populateReimbursementTable(data);
+  }else{
+    console.log("Reimbursements not available");
+  }
 }
