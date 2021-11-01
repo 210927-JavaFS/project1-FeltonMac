@@ -28,8 +28,8 @@ public class Reimbursement {
 @GeneratedValue()
 private	int re_id;
 double amount;//could change to int 
-LocalDateTime submitted;
-LocalDateTime  resolved;
+String submitted;
+String  resolved;
 String description;
 //Blob receipt;
 @ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
@@ -47,7 +47,7 @@ Type type;
 ;
 // new Date().toLocaleString();
 //
-public Reimbursement(int re_id, double amount, LocalDateTime submitted, LocalDateTime resolved, String description,
+public Reimbursement(int re_id, double amount, String submitted, String resolved, String description,
 		User author, User resolver, Status status, Type type) {
 	super();
 	this.re_id = re_id;
@@ -61,7 +61,7 @@ public Reimbursement(int re_id, double amount, LocalDateTime submitted, LocalDat
 	this.type = type;
 }
 
-public Reimbursement(double amount, LocalDateTime submitted, LocalDateTime resolved, String description, User author,
+public Reimbursement(double amount, String submitted, String resolved, String description, User author,
 		User resolver, Status status, Type type) {
 	super();
 	this.amount = amount;
@@ -89,11 +89,11 @@ public double getAmount() {
 	return amount;
 }
 
-public LocalDateTime getSubmitted() {
+public String getSubmitted() {
 	return submitted;
 }
 
-public LocalDateTime getResolved() {
+public String getResolved() {
 	return resolved;
 }
 
@@ -125,11 +125,11 @@ public void setAmount(double amount) {
 	this.amount = amount;
 }
 
-public void setSubmitted(LocalDateTime submitted) {
+public void setSubmitted(String submitted) {
 	this.submitted = submitted;
 }
 
-public void setResolved(LocalDateTime resolved) {
+public void setResolved(String resolved) {
 	this.resolved = resolved;
 }
 

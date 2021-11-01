@@ -35,7 +35,7 @@ public class ReimbursementService {
 			reimbursement.setAuthor(UDAO.findById(1));
 		}
 		if(reimbursement.getSubmitted()==null) {
-			reimbursement.setSubmitted(LocalDateTime.now());
+			reimbursement.setSubmitted(LocalDateTime.now().toString());
 		}
 		if(reimbursement.getDescription()==null) {
 			reimbursement.setDescription("no descriptioin inserted default selected");

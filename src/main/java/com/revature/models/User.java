@@ -31,26 +31,26 @@ private String firstname;
 private String lastname;
 private String email;
 
-@OneToMany(mappedBy="re_id", fetch=FetchType.EAGER )//cascade=CascadeType.ALL
-List<Reimbursement> reimbursements;
+//@OneToMany(mappedBy="re_id", fetch=FetchType.EAGER )//cascade=CascadeType.ALL
+//List<Reimbursement> reimbursements;
 @ManyToOne(fetch=FetchType.LAZY )//cascade=CascadeType.ALL
 @JoinColumn(name="roleid")
 Role role;
 
 
 public User(String username, int password, String firstname, String lastname, String email,
-		List<Reimbursement> reimbursements, Role role) {
+		 Role role) {
 	super();
 	this.username = username;
 	this.password = password;
 	this.firstname = firstname;
 	this.lastname = lastname;
 	this.email = email;
-	this.reimbursements = reimbursements;
+	//this.reimbursements = reimbursements;
 	this.role = role;
 }
 public User(int id, String username, int password, String firstname, String lastname, String email,
-		List<Reimbursement> reimbursements, Role role) {
+		 Role role) {
 	super();
 	this.id = id;
 	this.username = username;
@@ -58,7 +58,7 @@ public User(int id, String username, int password, String firstname, String last
 	this.firstname = firstname;
 	this.lastname = lastname;
 	this.email = email;
-	this.reimbursements = reimbursements;
+	//this.reimbursements = reimbursements;
 	this.role = role;
 }
 public User() {
@@ -107,12 +107,12 @@ public void setEmail(String email) {
 public void setRole(Role role) {
 	this.role = role;
 }
-public void setReimbursements(List<Reimbursement> list) {
-	this.reimbursements = list;
-}
+//public void setReimbursements(List<Reimbursement> list) {
+//	this.reimbursements = list;
+//}
 @Override
 public int hashCode() {
-	return Objects.hash(email, firstname, id, lastname, password, reimbursements, role, username);
+	return Objects.hash(email, firstname, id, lastname, password, role, username);
 }
 @Override
 public boolean equals(Object obj) {
@@ -125,7 +125,8 @@ public boolean equals(Object obj) {
 	User other = (User) obj;
 	return Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname) && id == other.id
 			&& Objects.equals(lastname, other.lastname) && Objects.equals(password, other.password)
-			&& Objects.equals(reimbursements, other.reimbursements) && Objects.equals(role, other.role)
+			//&& Objects.equals(reimbursements, other.reimbursements) 
+			&& Objects.equals(role, other.role)
 			&& Objects.equals(username, other.username);
 }
 @Override

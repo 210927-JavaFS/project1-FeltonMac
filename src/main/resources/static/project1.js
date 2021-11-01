@@ -1,8 +1,8 @@
-const URL = "http://localhost:8081/";
+const URL = "http://localhost:8081/"
 
 let buttonrow = document.getElementById("buttonRow");
-let UButton = document.createElement('userRetrieveButton');
-let RButton = document.createElement('reimbursementRetrieveButton');
+let UButton = document.getElementById('userRetrieveButton');
+let RButton = document.getElementById('reimbursementRetrieveButton');
 let userAdd = document.getElementById('addUserButton');
 let userFind = document.getElementById('findUserButton');
 let loginButton = document.getElementById('loginButton');
@@ -37,7 +37,7 @@ async function loginToApp(){
   });
 
   if(response.status===200){
-    document.getElementsByClassName("formClass")[0].innerHTML = '';
+    document.getElementsByClassName("formClass")[1].innerHTML = '';
     buttonRow.appendChild(UButton);
     buttonRow.appendChild(RButton);
   }
@@ -104,14 +104,15 @@ function populateReimbursementTable(data){
       let td = document.createElement("td");
       if (cell!="author" || cell != "resolver"){
         td.innerText = reimb[cell].id;
-      }else if(cell=="submitted" || cell == "resolved"){
-        td.innerText = new Date(reimb[cell]).toISOString().substring(0,10);// this might be a problem 
-      }else if(cell =="type"){
-        td.innerText =reimb[cell].typestring;
+      }//else if(cell=="submitted" || cell == "resolved"){
+        //td.innerText = new Date(reimb[cell]).toISOString().substring(0,10);// this might be a problem }
+      else if(cell =="type"){
+        td.innerText = reimb[cell].typestring;
       }else if(cell =="status"){
         td.innerText =reimb[cell].status;
-      }
+      }else{
       td.innerText = reimb[cell];
+      }
       row.appendChild(td);
     }
     tbody.appendChild(row);

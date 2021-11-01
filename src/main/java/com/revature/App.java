@@ -24,7 +24,7 @@ public class App {
 	 static ReimbursementService rs = new ReimbursementService();
 	private static Javalin app;
 	public static void main(String[] args) {
-		setDATATABLE();
+		//setDATATABLE();
 		app = Javalin.create((config)->{
 			config.addStaticFiles("/static", Location.CLASSPATH);
 		});
@@ -45,19 +45,29 @@ public class App {
 	public static void setDATATABLE() {
 		 UserService us= new UserService();
 		 ReimbursementService rs = new ReimbursementService();
+		 Role firstrole = new Role(0,"admin");
+		 Role secondrole = new Role(1,"employee");
+		 Type type1 = new Type(0,"lodging");
+		 Type type2 = new Type(1,"travel");
+		 String timestring;
+		 String timestring2;
+		 Status status= new Status(0,"pending");
+		 Status status2= new Status(1,"approved");
 //		
-			User u = new User(1,"oneone","oneone".hashCode(),"kirby","the star warrior", "starpower@gmail.com",
-					  null,new Role("admin"));
-			User u2 = new User(2,"twotwo","twotwo".hashCode(),"metaknight","fallen star warrior", "spinandslice@gmail.com",
-					  null,new Role("admin"));
-			Reimbursement r = new Reimbursement(1,200.00, LocalDateTime.now(), LocalDateTime.now(),
-					"first reimb",u,u2,new Status("pending"),new Type("lodging"));
-			Reimbursement r2 = new Reimbursement(2,300.00, LocalDateTime.now(), LocalDateTime.now(),
-					"second reimb",u,u2,new Status("pending"),new Type("lodging"));
-			List<Reimbursement> list=new ArrayList<Reimbursement>();
-			list.add(r);
-			u.setReimbursements(list);
-			u2.setReimbursements(list);
+			User u = new User(0,"oneone","oneone".hashCode(),"kirby","the star warrior", "starpower@gmail.com",
+					   null);
+			User u2 = new User(1,"twotwo","twotwo".hashCode(),"metaknight","fallen star warrior", "spinandslice@gmail.com",
+					   null);
+			Reimbursement r = new Reimbursement(0,200.00, timestring=LocalDateTime.now().toString() , timestring2 =LocalDateTime.now().toString(),
+					"first reimb",u,u2,new Status("pending"),new Type(0,"lodging"));
+			Reimbursement r2 = new Reimbursement(1,300.00,timestring=LocalDateTime.now().toString() , timestring2=LocalDateTime.now().toString() ,
+					"second reimb",u,u2,new Status("pending"),new Type(0,"lodging"));
+			//List<Reimbursement> list=new ArrayList<Reimbursement>();
+			//list.add(r);
+			u.setRole(firstrole);
+			u.setRole(secondrole);
+			//u.setReimbursements(list);
+			//u2.setReimbursements(list);
 			us.insertUser(u);
 			us.insertUser(u2);
 			rs.insertReimbursement(r);
