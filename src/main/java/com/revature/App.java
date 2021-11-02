@@ -1,5 +1,6 @@
 package com.revature;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,31 +48,31 @@ public class App {
 		 ReimbursementService rs = new ReimbursementService();
 		 Role firstrole = new Role(0,"admin");
 		 Role secondrole = new Role(1,"employee");
-		 Type type1 = new Type(0,"lodging");
-		 Type type2 = new Type(1,"travel");
+		 Type type1 = new Type("lodging");
+		 Type type2 = new Type("travel");
 		 String timestring;
 		 String timestring2;
 		 Status status= new Status(0,"pending");
 		 Status status2= new Status(1,"approved");
 //		
-			User u = new User(0,"oneone","oneone".hashCode(),"kirby","the star warrior", "starpower@gmail.com",
-					   null);
-			User u2 = new User(1,"twotwo","twotwo".hashCode(),"metaknight","fallen star warrior", "spinandslice@gmail.com",
-					   null);
-			Reimbursement r = new Reimbursement(0,200.00, timestring=LocalDateTime.now().toString() , timestring2 =LocalDateTime.now().toString(),
+			User u = new User("oneone","oneone".hashCode(),"kirby","the star warrior", "starpower@gmail.com"
+					 ,null ,new Role(0,"admin"));
+			User u2 = new User("twotwo","twotwo".hashCode(),"metaknight","fallen star warrior", "spinandslice@gmail.com"
+					  , null,new Role(1,"employee"));
+			Reimbursement r = new Reimbursement(200.00, Timestamp.valueOf(LocalDateTime.now()) , Timestamp.valueOf(LocalDateTime.now()),
 					"first reimb",u,u2,new Status("pending"),new Type(0,"lodging"));
-			Reimbursement r2 = new Reimbursement(1,300.00,timestring=LocalDateTime.now().toString() , timestring2=LocalDateTime.now().toString() ,
+			Reimbursement r2 = new Reimbursement(300.00,Timestamp.valueOf(LocalDateTime.now()) , Timestamp.valueOf(LocalDateTime.now()) ,
 					"second reimb",u,u2,new Status("pending"),new Type(0,"lodging"));
 			//List<Reimbursement> list=new ArrayList<Reimbursement>();
 			//list.add(r);
-			u.setRole(firstrole);
-			u.setRole(secondrole);
+			//u.setRole(firstrole);
+			//u.setRole(secondrole);
 			//u.setReimbursements(list);
 			//u2.setReimbursements(list);
 			us.insertUser(u);
 			us.insertUser(u2);
-			rs.insertReimbursement(r);
-			rs.insertReimbursement(r2);
+			//rs.insertReimbursement(r);
+			//rs.insertReimbursement(r2);
 		
 		}
 //	this.re_id = re_id;

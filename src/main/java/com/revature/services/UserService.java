@@ -3,6 +3,8 @@ package com.revature.services;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.revature.daos.UserDAO;
 import com.revature.daos.UserDAOImp;
@@ -10,11 +12,13 @@ import com.revature.models.User;
 import com.revature.utils.HibernateUtil;
 
 public class UserService {
+	private static Logger log = LoggerFactory.getLogger(UserService.class);
 	UserDAO UDAO = new UserDAOImp();
 
 	public List<User> getAllUsers(){
 		return UDAO.findAll();
 	}
+	
     public User findById(int id) {
     	User user = UDAO.findById(id);
     	if(user!=null) {
@@ -38,6 +42,8 @@ public class UserService {
 	}
 	
 	public boolean authenticate(String username,String password) {
+		log.info("login attempt: " + username);
+
 		try{
 			User user = UDAO.findByUsername(username);
 			if (user.getPassword()==(password.hashCode())) {
@@ -50,6 +56,16 @@ public class UserService {
 		}
 		return false;
 	}
+
+	public User findByUsername(String userpassed) {
+    	User user = UDAO.findByUsername(userpassed);
+    	if(user!=null) {
+    		return user;
+    	}else {
+    		System.out.println("User not found: " + userpassed);
+    		return new User();
+    	}
+    }
 	
 	
 	

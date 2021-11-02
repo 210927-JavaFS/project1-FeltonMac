@@ -1,8 +1,9 @@
 const URL = "http://localhost:8081/"
-
+// window.onload = function(){
+     
 let buttonrow = document.getElementById("buttonRow");
 let UButton = document.getElementById('userRetrieveButton');
-let RButton = document.getElementById('reimbursementRetrieveButton');
+let RButton = document.getElementById("reimbursementRetrieveButton");
 let userAdd = document.getElementById('addUserButton');
 let userFind = document.getElementById('findUserButton');
 let loginButton = document.getElementById('loginButton');
@@ -11,40 +12,46 @@ let reimbursementAdd = document.getElementById("addReimbursement");
 
 let approveButton = document.getElementById("approve");
 
+// }
 
 
+//  RButton.onclick = getReimbursementList;
+//  UButton.onclick = getUsersList;
+//  RButton.innerText = "Reimbursement list";
+//  UButton.innerText = "user list";
 
-RButton.onclick = getReimbursementList;
-UButton.onclick = getUsersList;
 userAdd.onclick = addUser;
 userFind.onclick = findUser;
 loginButton.onclick = loginToApp; 
 reimbursementFind.onclick = findReimbursement;
 reimbursementAdd.onclick = addReimbursement;
-RButton.innerText = "Reimbursement list";
-UButton.innerText = "user list";
+approveButton.onclick = approveReimbursement;
+sessionStorage.setItem(loginusername,user.username)
+
+
 
 async function loginToApp(){
   let user = {
     username:document.getElementById("uname").value,
     password:document.getElementById("pword").value
   }
-
+  
   let response = await fetch(URL+"login", {
     method:"POST",
     body:JSON.stringify(user),
-    credentials:"include" //This will save the cookie when we receive it. 
+    credentials:"include" ,//This will save the cookie when we receive it. 
   });
 
   if(response.status===200){
+    //console.log(sessionStorage.getItem(loginusername))
     document.getElementsByClassName("formClass")[1].innerHTML = '';
-    buttonRow.appendChild(UButton);
-    buttonRow.appendChild(RButton);
+    //buttonRow.appendChild(UButton);
+    //buttonRow.appendChild(RButton);
   }
   else{
     let para = document.createElement("p");
     para.setAttribute("style", "color:red")
-    para.innerText = "LOGIN FAILED"
+    para.innerText = "[LOGIN FAILED]"
     document.getElementsByClassName("formClass")[0].appendChild(para);
   }
 }
@@ -54,6 +61,7 @@ async function getUsersList(){
 
   if(response.status === 200){
     let data = await response.json();
+    console.log(data)
     populateUsersTable(data);
   }else{
     console.log("no users returned.");
@@ -70,12 +78,13 @@ function populateUsersTable(data){
 
     for(let cell in user){
       let td = document.createElement("td");
-      if(cell!="reimbursements"|| cell!="role"){
-        td.innerText=user[cell];
-      }else if(cell=="reimbursements"){//${user[cell].firstname}
+       if(cell=="reimbursements"){//${user[cell].firstname}
+        console.log(cell + ' :thobject content' + user[cell])
         td.innerText = `${user[cell][0].Re_id}`// this may need to getinside a list 
       }else if(cell=="role"){
         td.innerText = `${user[cell].roleString}`
+      }else{
+        td.innerText = `${user[cell]}`
       }
       row.appendChild(td);
       }
@@ -85,6 +94,7 @@ function populateUsersTable(data){
 
 async function getReimbursementList(){
   let response = await fetch(URL+"reimbursements", {credentials:"include"});
+  console.log(response.status);
   if(response.status===200){
     let data = await response.json();
     populateReimbursementTable(data);
@@ -94,7 +104,7 @@ async function getReimbursementList(){
 }
 
 function populateReimbursementTable(data){
-  let tbody = document.getElementById("reimBody");
+  let tbody = document.getElementById("reimbBody");
 
   tbody.innerHTML="";
 //var dateString = new Date().toISOString().substring(0,10);
@@ -127,7 +137,7 @@ function userFromInput(){
   let newEmail = document.getElementById("email").value;
   let newReimbursement  = document.getElementById("reimbursement").value;
   let newPassword=null;
-  let newRole=null
+  let newRole=null;
 
   let newUser =  {
     username:newUsername,
@@ -147,26 +157,32 @@ function userFromInput(){
 }
 function reimbursementFromInput(){
   let newReimbID = document.getElementById("reimbnumber").value;
+  appendChild()
   let newAmount = document.getElementById("amountInput").value;
-  let newSubmitted = null; 
-  let newresolved = null;
-  let newAuthor = null;// this should be who ever is signed in 
-  let newResolver = null;
-  let newDescription = document.getElementById("descriptionInput").value;
+  //let newSubmitted = null; 
+  //let newresolved = null;
+  //let newAuthor = // this should be who ever is signed in 
+  //let newResolver = null;
+  let newDescription ;
+  if (document.getElementById("descriptionInput").value){
+     newDescription = document.getElementById("descriptionInput").value;
+  }else{
+     newDescription ="no description added"
+  }
   let newType = document.getElementById("typeInput").value;
   let newStatus = null;
 
   let newReimb = {
     re_id : newReimbID,
-    amount:newAmount, 
-    submitted:newSubmitted,
-    resolved:newresolved,
-    description:newDescription,
-    author:newAuthor,
-    resolver:newResolver,
-    status:newStatus,
+    amount: newAmount, 
+    submitted: newSubmitted,
+    resolved: newresolved,
+    description: newDescription,
+    author: newAuthor,
+    resolver: newResolver,
+    status: newStatus,
     type: {
-        typestring:newType
+        typestring: newType
     }
      //should I add id?
 }
@@ -219,13 +235,29 @@ async function findReimbursement(){
   }
 }
 async function findUser(){
-  let reimb = userFromInput();
+  let usermade = userFromInput();
 
-  let response = await fetch(URL+"reimbursements/"+reimb.re_id, {credentials:"include"});
+  let response = await fetch(URL+"reimbursements/"+usermade.username, {credentials:"include"});
   if(response.status===200){
     let data = await response.json();
     populateReimbursementTable(data);
   }else{
-    console.log("Reimbursements not available");
+    console.log("user not available check username again");
   }
+}
+async function approveReimbursement(){
+  let reimb = reimbursementFromInput();
+
+  let response = await fetch(URL+"reimbursementsapprove/"+reimb.re_id, {
+    method:'POST',
+    body:JSON.stringify(reimb),
+    credentials:"include"
+  });
+
+  if(response.status===201){
+    console.log("reimb approved sussesfully");
+  }else{
+    console.log("Something went wrong approving the Reimbursement.")
+  }
+
 }

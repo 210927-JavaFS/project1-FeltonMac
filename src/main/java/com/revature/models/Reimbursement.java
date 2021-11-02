@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import java.sql.Timestamp;
 //import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -28,14 +29,14 @@ public class Reimbursement {
 @GeneratedValue()
 private	int re_id;
 double amount;//could change to int 
-String submitted;
-String  resolved;
+Timestamp submitted;
+Timestamp  resolved;
 String description;
 //Blob receipt;
-@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+@ManyToOne(fetch=FetchType.EAGER)
 @JoinColumn(name="id")
 User author;
-@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+@ManyToOne(fetch=FetchType.LAZY)
 @JoinColumn(name="id",updatable= false,insertable = false)
 User resolver;
 @ManyToOne(fetch=FetchType.LAZY)//cascade=CascadeType.ALL
@@ -47,7 +48,7 @@ Type type;
 ;
 // new Date().toLocaleString();
 //
-public Reimbursement(int re_id, double amount, String submitted, String resolved, String description,
+public Reimbursement(int re_id, double amount, Timestamp submitted, Timestamp resolved, String description,
 		User author, User resolver, Status status, Type type) {
 	super();
 	this.re_id = re_id;
@@ -61,7 +62,7 @@ public Reimbursement(int re_id, double amount, String submitted, String resolved
 	this.type = type;
 }
 
-public Reimbursement(double amount, String submitted, String resolved, String description, User author,
+public Reimbursement(double amount, Timestamp submitted, Timestamp resolved, String description, User author,
 		User resolver, Status status, Type type) {
 	super();
 	this.amount = amount;
@@ -89,11 +90,11 @@ public double getAmount() {
 	return amount;
 }
 
-public String getSubmitted() {
+public Timestamp getSubmitted() {
 	return submitted;
 }
 
-public String getResolved() {
+public Timestamp getResolved() {
 	return resolved;
 }
 
@@ -125,11 +126,11 @@ public void setAmount(double amount) {
 	this.amount = amount;
 }
 
-public void setSubmitted(String submitted) {
+public void setSubmitted(Timestamp submitted) {
 	this.submitted = submitted;
 }
 
-public void setResolved(String resolved) {
+public void setResolved(Timestamp resolved) {
 	this.resolved = resolved;
 }
 
@@ -175,7 +176,7 @@ public boolean equals(Object obj) {
 @Override
 public String toString() {
 	return "Reimbursement [re_id=" + re_id + ", amount=" + amount + ", submitted=" + submitted + ", resolved="
-			+ resolved + ", description=" + description + ", author=" + author + ", resolver=" + resolver + ", status="
+			+ resolved + ", description=" + description + ", author=" + author.id+ ", resolver=" + resolver.id+ ", status="
 			+ status + ", type=" + type + "]";
 }
 

@@ -31,26 +31,17 @@ private String firstname;
 private String lastname;
 private String email;
 
-//@OneToMany(mappedBy="re_id", fetch=FetchType.EAGER )//cascade=CascadeType.ALL
-//List<Reimbursement> reimbursements;
-@ManyToOne(fetch=FetchType.LAZY )//cascade=CascadeType.ALL
+@OneToMany(mappedBy="re_id", fetch=FetchType.EAGER )//cascade=CascadeType.ALL
+List<Reimbursement> reimbursements=new ArrayList<>();
+@ManyToOne(fetch=FetchType.EAGER )//cascade=CascadeType.ALL
 @JoinColumn(name="roleid")
 Role role;
 
 
-public User(String username, int password, String firstname, String lastname, String email,
-		 Role role) {
-	super();
-	this.username = username;
-	this.password = password;
-	this.firstname = firstname;
-	this.lastname = lastname;
-	this.email = email;
-	//this.reimbursements = reimbursements;
-	this.role = role;
-}
+
+
 public User(int id, String username, int password, String firstname, String lastname, String email,
-		 Role role) {
+		List<Reimbursement> reimbursements, Role role) {
 	super();
 	this.id = id;
 	this.username = username;
@@ -58,8 +49,22 @@ public User(int id, String username, int password, String firstname, String last
 	this.firstname = firstname;
 	this.lastname = lastname;
 	this.email = email;
-	//this.reimbursements = reimbursements;
+	this.reimbursements = reimbursements;
 	this.role = role;
+}
+public User(String username, int password, String firstname, String lastname, String email,
+		List<Reimbursement> reimbursements, Role role) {
+	super();
+	this.username = username;
+	this.password = password;
+	this.firstname = firstname;
+	this.lastname = lastname;
+	this.email = email;
+	this.reimbursements = reimbursements;
+	this.role = role;
+}
+public List<Reimbursement> getReimbursements() {
+	return reimbursements;
 }
 public User() {
 	super();
@@ -107,9 +112,9 @@ public void setEmail(String email) {
 public void setRole(Role role) {
 	this.role = role;
 }
-//public void setReimbursements(List<Reimbursement> list) {
-//	this.reimbursements = list;
-//}
+public void setReimbursements(List<Reimbursement> list) {
+	this.reimbursements = list;
+}
 @Override
 public int hashCode() {
 	return Objects.hash(email, firstname, id, lastname, password, role, username);
@@ -125,14 +130,15 @@ public boolean equals(Object obj) {
 	User other = (User) obj;
 	return Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname) && id == other.id
 			&& Objects.equals(lastname, other.lastname) && Objects.equals(password, other.password)
-			//&& Objects.equals(reimbursements, other.reimbursements) 
+			&& Objects.equals(reimbursements, other.reimbursements) 
 			&& Objects.equals(role, other.role)
 			&& Objects.equals(username, other.username);
 }
 @Override
 public String toString() {
 	return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstname=" + firstname
-			+ ", lastname=" + lastname + ", email=" + email + ", role=" + role + "]";
+			+ ", lastname=" + lastname + ", email=" + email + ", reimbursements="+((reimbursements.size()>0)?reimbursements.get(0).getRe_id():null) + ", role=" + role
+			+ "]";
 }
 
 
