@@ -39,7 +39,7 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 			Transaction tx = session.beginTransaction();
 			session.saveOrUpdate(reimb);
 			tx.commit();
-			//HibernateUtil.closeSession();
+			HibernateUtil.closeSession();
 			return true;
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -54,7 +54,7 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 			Transaction tx = session.beginTransaction();
 			session.merge(reimb);
 			tx.commit();
-			//HibernateUtil.closeSession();
+			HibernateUtil.closeSession();
 			return true;
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -69,7 +69,7 @@ public class ReimbursementDAOImp implements ReimbursementDAO {
 			Transaction tx = session.beginTransaction();
 			session.delete(reimb);
 			tx.commit();
-			//HibernateUtil.closeSession();
+			HibernateUtil.closeSession();
 			return true;
 		} catch (HibernateException e) {
 			e.printStackTrace();

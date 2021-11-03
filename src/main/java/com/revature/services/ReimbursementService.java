@@ -61,7 +61,7 @@ public class ReimbursementService {
 		try {
 			Reimbursement DAOreimb = RDAO.getById(reimbursementint);
 		    DAOreimb.setStatus(new Status("approved"));
-		    RDAO.insertReimb(DAOreimb);
+		    RDAO.updateReimb(DAOreimb);
 		    return true;
 		} catch (HibernateException e) {
 			e.printStackTrace();

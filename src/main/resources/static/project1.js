@@ -30,6 +30,12 @@ approveButton.onclick = approveReimbursement;
 
 
 async function loginToApp(){
+  // fetch(request).then((response) => {
+  //   console.log(response);
+  //   response.json().then((data) => {
+  //       console.log(data);
+  //   });
+// });
   let user = {
     username:document.getElementById("uname").value,
     password:document.getElementById("pword").value
@@ -93,7 +99,7 @@ function populateUsersTable(data){
     for(let cell in user){
       let td = document.createElement("td");
        if(cell=="reimbursements"){//${user[cell].firstname}
-          if(user[cell].length1=0){
+          if(user[cell].length=0){
           console.log(cell + ' :the object content' + user[cell])
           td.innerText = `${user[cell][0].re_id}`}
           else{td.innerText = " no reimbursement assigned "}// this may need to getinside a list 
@@ -120,17 +126,22 @@ async function getReimbursementList(){
 }
 
 function populateReimbursementTable(data){
+  console.log(data);
   let tbody = document.getElementById("reimbBody");
-
   tbody.innerHTML="";
 //var dateString = new Date().toISOString().substring(0,10);
   for(let reimb of data){
     let row = document.createElement("tr");
     for(let cell in reimb){
       let td = document.createElement("td");
-      if (cell=="author" || cell == "resolver"){
-        if(cell){td.innerText = reimb[cell].id;}
+      if (cell=="author"){
+        if(reimb[cell]){td.innerText = reimb[cell].id;}
         else{td.innerText = null}
+      }
+      if( cell == "resolver"){
+        if(reimb[cell]){td.innerText = reimb[cell].id;}
+        else{td.innerText = null}
+       
       }else if(cell=="submitted" || cell == "resolved"){
         td.innerText = new Date(reimb[cell]).toISOString().substring(0,10);// this might be a problem }
       }else if(cell =="type"){
@@ -178,7 +189,6 @@ function reimbursementFromInput(){
 
   if(!newAmount){
     console.log("please enter a ID");
-    return null;
   }
   let newSubmitted = null; 
   let newresolved = null;
@@ -207,7 +217,8 @@ function reimbursementFromInput(){
     }
      //should I add id?
 }
-
+console.log(newReimbID)
+console.log(newReimb)
   return newReimb;
 }
 
@@ -268,7 +279,7 @@ async function findUser(){
 }
 async function approveReimbursement(){
   let reimb = reimbursementFromInput();
-
+  console.log(reimb);
   let response = await fetch(URL+"reimbursementsapprove/"+reimb.re_id, {
     method:'PUT',
     body:JSON.stringify(reimb),

@@ -95,6 +95,7 @@ public class ReimbursementController implements Controller {
 			if (ctx.req.getSession(false) != null) {
 				try {
 					String id = ctx.pathParam("reimbursementint");
+					System.out.println(id+"--------------------------------------------------------------------------------------------------------------------------------------------------");
 					int reimbursementint = Integer.parseInt(id);
 					if (reimbursementService.approveStatus(reimbursementint)) {
 						ctx.status(200);

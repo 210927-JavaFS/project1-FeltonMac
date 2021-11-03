@@ -34,10 +34,10 @@ Timestamp  resolved;
 String description;
 //Blob receipt;
 @ManyToOne(fetch=FetchType.EAGER)
-@JoinColumn(name="id")
+@JoinColumn(name="id_author")
 User author;
 @ManyToOne(fetch=FetchType.EAGER)
-@JoinColumn(name="id",updatable= false,insertable = false)
+@JoinColumn(name= "id_resolver ",updatable= false,insertable = false)
 User resolver;
 @ManyToOne(fetch=FetchType.EAGER)//cascade=CascadeType.ALL
 @JoinColumn(name="status_id")
