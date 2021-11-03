@@ -36,13 +36,13 @@ String description;
 @ManyToOne(fetch=FetchType.EAGER)
 @JoinColumn(name="id")
 User author;
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
 @JoinColumn(name="id",updatable= false,insertable = false)
 User resolver;
-@ManyToOne(fetch=FetchType.LAZY)//cascade=CascadeType.ALL
+@ManyToOne(fetch=FetchType.EAGER)//cascade=CascadeType.ALL
 @JoinColumn(name="status_id")
 Status status;
-@ManyToOne(fetch=FetchType.LAZY )//cascade=CascadeType.ALL
+@ManyToOne(fetch=FetchType.EAGER )//cascade=CascadeType.ALL
 @JoinColumn(name="type_id")
 Type type;
 ;
@@ -176,7 +176,7 @@ public boolean equals(Object obj) {
 @Override
 public String toString() {
 	return "Reimbursement [re_id=" + re_id + ", amount=" + amount + ", submitted=" + submitted + ", resolved="
-			+ resolved + ", description=" + description + ", author=" + author.id+ ", resolver=" + resolver.id+ ", status="
+			+ resolved + ", description=" + description + ", author=" + ", resolver=" + ", status="
 			+ status + ", type=" + type + "]";
 }
 

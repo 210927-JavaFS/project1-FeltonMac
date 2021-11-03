@@ -33,7 +33,7 @@ public class ReimbursementService {
   
 	public boolean insertReimbursement(Reimbursement reimbursement) {
 		if(reimbursement.getAuthor()==null) {
-			reimbursement.setAuthor(UDAO.findById(1));
+			reimbursement.setAuthor(UDAO.findByUsername("oneone"));
 		}
 		if(reimbursement.getSubmitted()==null) {
 			reimbursement.setSubmitted(Timestamp.valueOf(LocalDateTime.now()));

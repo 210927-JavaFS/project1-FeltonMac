@@ -1,5 +1,5 @@
 const URL = "http://localhost:8081/"
-// window.onload = function(){
+// window.onload = function(){}
      
 let buttonrow = document.getElementById("buttonRow");
 let UButton = document.getElementById('userRetrieveButton');
@@ -11,8 +11,9 @@ let reimbursementFind = document.getElementById("findByIDReimbursement");
 let reimbursementAdd = document.getElementById("addReimbursement");
 
 let approveButton = document.getElementById("approve");
+let loginuser1;
+let loggedinuser;
 
-// }
 
 
 //  RButton.onclick = getReimbursementList;
@@ -26,8 +27,6 @@ loginButton.onclick = loginToApp;
 reimbursementFind.onclick = findReimbursement;
 reimbursementAdd.onclick = addReimbursement;
 approveButton.onclick = approveReimbursement;
-sessionStorage.setItem(loginusername,user.username)
-
 
 
 async function loginToApp(){
@@ -35,16 +34,18 @@ async function loginToApp(){
     username:document.getElementById("uname").value,
     password:document.getElementById("pword").value
   }
-  
+  //sessionStorage.setItem("loginuser",user)//may have to stringify;
+  //loginuser1 = sessionStorage.getItem("loginuser");
+  //console.log(loginuser1+ " was saved to session");
   let response = await fetch(URL+"login", {
     method:"POST",
     body:JSON.stringify(user),
     credentials:"include" ,//This will save the cookie when we receive it. 
   });
-
+ 
   if(response.status===200){
-    //console.log(sessionStorage.getItem(loginusername))
     document.getElementsByClassName("formClass")[1].innerHTML = '';
+    getLoggedinUser(user.username);
     //buttonRow.appendChild(UButton);
     //buttonRow.appendChild(RButton);
   }
@@ -54,6 +55,19 @@ async function loginToApp(){
     para.innerText = "[LOGIN FAILED]"
     document.getElementsByClassName("formClass")[0].appendChild(para);
   }
+}
+async  function getLoggedinUser(username){
+
+ let response = await fetch(URL+ "usersbyname/"+ username ,{credentials:"include"});
+ if (response.status === 200){
+   let data = await response.json();
+  sessionStorage.setItem("loggedinuser",JSON.stringify(data))
+  // loggedinuser=session.getItem("loggedinuser");
+  // console.log(loggedinuser + " this is the logged in full user ")
+   // sessionStorage.setItem("loginuser",JSON.stringify(data));
+   // loggedinuser = await JSON.parse(sessionStorage.getitem("loginuser"));
+ }else console.log( response);
+
 }
 
 async function getUsersList(){
@@ -79,8 +93,10 @@ function populateUsersTable(data){
     for(let cell in user){
       let td = document.createElement("td");
        if(cell=="reimbursements"){//${user[cell].firstname}
-        console.log(cell + ' :thobject content' + user[cell])
-        td.innerText = `${user[cell][0].Re_id}`// this may need to getinside a list 
+          if(user[cell].length1=0){
+          console.log(cell + ' :the object content' + user[cell])
+          td.innerText = `${user[cell][0].re_id}`}
+          else{td.innerText = " no reimbursement assigned "}// this may need to getinside a list 
       }else if(cell=="role"){
         td.innerText = `${user[cell].roleString}`
       }else{
@@ -112,11 +128,12 @@ function populateReimbursementTable(data){
     let row = document.createElement("tr");
     for(let cell in reimb){
       let td = document.createElement("td");
-      if (cell!="author" || cell != "resolver"){
-        td.innerText = reimb[cell].id;
-      }//else if(cell=="submitted" || cell == "resolved"){
-        //td.innerText = new Date(reimb[cell]).toISOString().substring(0,10);// this might be a problem }
-      else if(cell =="type"){
+      if (cell=="author" || cell == "resolver"){
+        if(cell){td.innerText = reimb[cell].id;}
+        else{td.innerText = null}
+      }else if(cell=="submitted" || cell == "resolved"){
+        td.innerText = new Date(reimb[cell]).toISOString().substring(0,10);// this might be a problem }
+      }else if(cell =="type"){
         td.innerText = reimb[cell].typestring;
       }else if(cell =="status"){
         td.innerText =reimb[cell].status;
@@ -157,12 +174,16 @@ function userFromInput(){
 }
 function reimbursementFromInput(){
   let newReimbID = document.getElementById("reimbnumber").value;
-  appendChild()
   let newAmount = document.getElementById("amountInput").value;
-  //let newSubmitted = null; 
-  //let newresolved = null;
-  //let newAuthor = // this should be who ever is signed in 
-  //let newResolver = null;
+
+  if(!newAmount){
+    console.log("please enter a ID");
+    return null;
+  }
+  let newSubmitted = null; 
+  let newresolved = null;
+  let newAuthor = JSON.parse(sessionStorage.getItem("loggedinuser"));// this should be who ever is signed in 
+  let newResolver = null;
   let newDescription ;
   if (document.getElementById("descriptionInput").value){
      newDescription = document.getElementById("descriptionInput").value;
@@ -192,8 +213,8 @@ function reimbursementFromInput(){
 
 async function addReimbursement(){
   let reimb = reimbursementFromInput();
-
-  let response = await fetch(URL+"reimbursements/:"+reimb, {
+  //reimb.re_id=0;
+  let response = await fetch(URL+"reimbursements/", {
     method:'POST',
     body:JSON.stringify(reimb),
     credentials:"include"
@@ -218,7 +239,7 @@ async function addUser(){
   if(response.status===201){
     console.log("reimb added sussesfully");
   }else{
-    console.log("Something went wrong creating the Reimbursement.")
+    console.log("Something went wrong adding the user.")
   }
 
 }
@@ -249,7 +270,7 @@ async function approveReimbursement(){
   let reimb = reimbursementFromInput();
 
   let response = await fetch(URL+"reimbursementsapprove/"+reimb.re_id, {
-    method:'POST',
+    method:'PUT',
     body:JSON.stringify(reimb),
     credentials:"include"
   });

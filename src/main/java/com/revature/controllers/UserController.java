@@ -2,7 +2,7 @@ package com.revature.controllers;
 
 import java.util.List;
 
-
+import com.revature.models.LoginUser;
 import com.revature.models.User;
 import com.revature.services.UserService;
 
@@ -37,8 +37,10 @@ public class UserController implements Controller {
 	public Handler getUserByName = (ctx) ->{
 		if (ctx.req.getSession(false) != null) {
 			try {
-				String userpassed= ctx.pathParam("user");
-				User user = userService.findByUsername(userpassed);
+				String username= ctx.pathParam("user");
+				//System.out.println(username);
+				User user = userService.findByUsername(username);
+				//System.out.println(user);
 				//User user = userService.findById(Integer.parseInt(ctx.pathParam("user")));	
 				ctx.json(user);
 				ctx.status(200);
@@ -105,7 +107,6 @@ public class UserController implements Controller {
 		app.put("/users", this.updateUser);
 		app.delete("/users/:user", this.deleteUser);
 		app.get("/usersbyname/:user",this.getUserByName);
-
 	}
 }
 

@@ -137,10 +137,10 @@ public boolean equals(Object obj) {
 @Override
 public String toString() {
 	return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstname=" + firstname
-			+ ", lastname=" + lastname + ", email=" + email + ", reimbursements="+((reimbursements.size()>0)?reimbursements.get(0).getRe_id():null) + ", role=" + role
+			+ ", lastname=" + lastname + ", email=" + email + ", reimbursements="+ ", role=" + role
 			+ "]";
 }
-
+//(reimbursements.size()>0)?reimbursements.get(0).getRe_id():null) 
 
 
 }
